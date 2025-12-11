@@ -1,6 +1,5 @@
 import math
 import numpy as np
-import curses
 
 class Student():
     def __init__(self,name ,id, dob):
@@ -22,7 +21,7 @@ class Student():
     
     def display(self):
        print(f"Name: {self.__name} | ID: {self.__id} | DOB: {self.__dob}")
-    
+
 class Course():
     def __init__(self,id, name, credits):
         self.__id = id
@@ -49,6 +48,10 @@ class Mark():
         self.sid = sid
         self.cid = cid
         self.mark = mark
+
+   def __str__(self):
+    return f"{self.sid} | {self.cid} | {self.mark} "
+       
     
 class Mark_Management():
     def __init__(self):
@@ -62,6 +65,8 @@ class Mark_Management():
             s = Student("", "", "")
             s.input()
             self.students.append(s)
+            with open("students.txt", 'a') as f:
+               f.write(f"{s.get_name()} | {s.get_id()} | {s.get_dob()}")
 
     def input_Course(self):
         n = int(input("Enter the number of course: "))
@@ -69,6 +74,10 @@ class Mark_Management():
             c = Course("", "", "")
             c.input()
             self.course.append(c)
+
+            with open("course.txt", 'a') as d:
+               d.write(f"{c.get_name()} | {c.get_id()} | {c.get_credit()}")
+        
             self.mark[c.get_id()] = []
 
     def get_Mark(self):
@@ -82,16 +91,20 @@ class Mark_Management():
        for stu in self.students:
             m = float(input(f"Enter mark for {stu.get_name()} ({stu.get_id()}): "))
            
-            mark_s = Mark(stu.get_id(), c_id, m.floor())
+            mark_s = Mark(stu.get_id(), c_id, (math.floor(m*10)/10))
             self.mark[c_id].append(mark_s)
+            with open("marks.txt", 'a') as n:
+                n.write(str(mark_s) + "\n")
 
-    def average_gpa(self,stu_id):
+    def average_gpa(self):
         self.gpa_list = []
         self.credit_list = []
+
+        stu_id = input("Enter student id to get GPA: ")
         for c in self.course:
             c_id = c.get_id()
             mark_s = next((m for m in self.mark[c_id] if m.sid == stu_id), None)
-        
+            
             if mark_s:
                 self.gpa_list.append(mark_s.mark)
                 self.credit_list.append(c.get_credit())
@@ -107,7 +120,10 @@ class Mark_Management():
         total_credit = np.sum(cre_arr)
 
         final_gpa = weighted_sum/total_credit
+
+        print(f"Average GPA of student {stu_id}: {math.floor(final_gpa)}")
         return final_gpa
+    
     
     def sort_gpa(self):
         self.gpa_values = []
@@ -121,7 +137,9 @@ class Mark_Management():
         print("----- Students GPA sorted (descending): -----")
         for i in index:
             stu = self.students[i]
-            gpa = self.gpa_values[i]
-            print(f"Name: {stu.get_name()} | ID: {stu.get_id()} | GPA: {(math.floor(gpa*10)/10)} ")
+            print(f"{stu.get_name()} | ({stu.get_id()})")
+
+
+    
 
     

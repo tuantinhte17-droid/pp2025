@@ -3,6 +3,6 @@ class Mark():
         self.sid = sid
         self.cid = cid
         self.mark = mark
-        
+
    def __str__(self):
-    return f"{self.sid} | {self.cid} | {self.mark}"
+       return f"{self.sid} | {self.cid} | {self.mark}"

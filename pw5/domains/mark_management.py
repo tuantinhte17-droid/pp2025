@@ -1,55 +1,9 @@
 import math
 import numpy as np
-import curses
+from domains.student import Student
+from domains.courses import Course
+from domains.mark import Mark
 
-class Student():
-    def __init__(self,name ,id, dob):
-        self.__name = name
-        self.__id = id
-        self.__dob = dob
-
-    def input(self):
-        self.__id = input("Student ID: ")
-        self.__name = input("Student Name: ")
-        self.__dob = input("Student DOB: ")
-
-    def get_name(self):
-        return self.__name
-    def get_id(self):
-        return self.__id
-    def get_dob(self):
-        return self.__dob
-    
-    def display(self):
-       print(f"Name: {self.__name} | ID: {self.__id} | DOB: {self.__dob}")
-    
-class Course():
-    def __init__(self,id, name, credits):
-        self.__id = id
-        self.__name = name
-        self.__credit = credits
-
-    def input(self):
-        self.__id = input("Course ID: ")
-        self.__name = input("Course Name: ")
-        self.__credit = input("Course Credits: ")
-        
-    def get_id(self):
-        return self.__id
-    def get_name(self):
-        return self.__name
-    def get_credit(self):
-        return self.__credit
-    
-    def display(self):
-        print(f"Name: {self.__name} | ID: {self.__id} | Credits: {self.__credit}")
-    
-class Mark():
-   def __init__(self, sid, cid, mark):
-        self.sid = sid
-        self.cid = cid
-        self.mark = mark
-    
 class Mark_Management():
     def __init__(self):
       self.students = []
@@ -62,6 +16,12 @@ class Mark_Management():
             s = Student("", "", "")
             s.input()
             self.students.append(s)
+            with open("students.txt", 'a') as f:
+               f.write(str(s) + "\n")
+
+    def display_Student(self):
+        for s in self.students:
+            s.display()
 
     def input_Course(self):
         n = int(input("Enter the number of course: "))
@@ -69,7 +29,15 @@ class Mark_Management():
             c = Course("", "", "")
             c.input()
             self.course.append(c)
+
+            with open("course.txt", 'a') as d:
+               d.write(str(c) + "\n")
+
             self.mark[c.get_id()] = []
+
+    def display_Course(self):
+        for c in self.course:
+            c.display()
 
     def get_Mark(self):
        c_id = input("Enter course ID to get mark: ")
@@ -82,8 +50,19 @@ class Mark_Management():
        for stu in self.students:
             m = float(input(f"Enter mark for {stu.get_name()} ({stu.get_id()}): "))
            
-            mark_s = Mark(stu.get_id(), c_id, m.floor())
+            mark_s = Mark(stu.get_id(), c_id, (math.floor(m*10)/10))
             self.mark[c_id].append(mark_s)
+            with open("marks.txt", 'a') as n:
+                n.write(str(mark_s) + "\n")
+    
+    def display_Mark(self):
+        for c in self.course:
+            c_id = c.get_id()
+            print(f" -- Mark for {c_id} ---")
+            for n in self.mark[c_id]:
+               name = next((s.get_name() for s in self.students if s.get_id() == n.sid) , None)
+               print(f"Student Name: {name} | Student ID:{n.sid} | Mark: {n.mark}")
+
 
     def average_gpa(self,stu_id):
         self.gpa_list = []
@@ -109,6 +88,7 @@ class Mark_Management():
         final_gpa = weighted_sum/total_credit
         return final_gpa
     
+    
     def sort_gpa(self):
         self.gpa_values = []
         for stu in self.students:
@@ -121,7 +101,4 @@ class Mark_Management():
         print("----- Students GPA sorted (descending): -----")
         for i in index:
             stu = self.students[i]
-            gpa = self.gpa_values[i]
-            print(f"Name: {stu.get_name()} | ID: {stu.get_id()} | GPA: {(math.floor(gpa*10)/10)} ")
-
-    
+            print(f"{stu.get_name()} | ({stu.get_id()})")

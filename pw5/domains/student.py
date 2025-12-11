@@ -18,4 +18,3 @@ class Student():
     
     def display(self):
        print(f"Name: {self.__name} | ID: {self.__id} | DOB: {self.__dob}")
-    

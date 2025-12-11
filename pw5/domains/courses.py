@@ -17,4 +17,4 @@ class Course():
         return self.__credit
     
     def display(self):
-       print(f"Name: {self.__name} | ID: {self.__id} | Credits: {self.__credit}")
+        print(f"Name: {self.__name} | ID: {self.__id} | Credits: {self.__credit}")
