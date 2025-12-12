@@ -40,20 +40,23 @@ class Mark_Management():
             c.display()
 
     def get_Mark(self):
+      while True:
        c_id = input("Enter course ID to get mark: ")
-
+       if c_id == "none":
+           break
+          
        if c_id not in self.mark:
             print("Invalid Course ")
-            return
-        
-       print(f" --- Input mark for course {c_id} --- ")
+            continue
+
+       print(f" --- Input mark for course {c_id } --- ")
        for stu in self.students:
-            m = float(input(f"Enter mark for {stu.get_name()} ({stu.get_id()}): "))
+         m = float(input(f"Enter mark for {stu.get_name()} ({stu.get_id()}): "))
            
-            mark_s = Mark(stu.get_id(), c_id, (math.floor(m*10)/10))
-            self.mark[c_id].append(mark_s)
-            with open("marks.txt", 'a') as n:
-                n.write(str(mark_s) + "\n")
+         mark_s = Mark(stu.get_id(), c_id, (math.floor(m*10)/10))
+         self.mark[c_id].append(mark_s)
+         with open("marks.txt", 'a') as n:
+            n.write(str(mark_s) + "\n")
     
     def display_Mark(self):
         for c in self.course:
@@ -101,4 +104,4 @@ class Mark_Management():
         print("----- Students GPA sorted (descending): -----")
         for i in index:
             stu = self.students[i]
-            print(f"{stu.get_name()} | ({stu.get_id()})")
+            print(f"Name :{stu.get_name()} | ID: {stu.get_id()} | GPA: {(math.floor(gpa*10)/10)}")

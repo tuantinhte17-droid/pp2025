@@ -1,4 +1,5 @@
 import math
+import pickle
 import numpy as np
 
 class Student():
@@ -19,7 +20,7 @@ class Student():
     def get_dob(self):
         return self.__dob
     
-    def display(self):
+    def __str__(self):
        print(f"Name: {self.__name} | ID: {self.__id} | DOB: {self.__dob}")
 
 class Course():
@@ -40,7 +41,7 @@ class Course():
     def get_credit(self):
         return self.__credit
     
-    def display(self):
+    def __str__(self):
         print(f"Name: {self.__name} | ID: {self.__id} | Credits: {self.__credit}")
     
 class Mark():
@@ -66,7 +67,7 @@ class Mark_Management():
             s.input()
             self.students.append(s)
             with open("students.txt", 'a') as f:
-               f.write(f"{s.get_name()} | {s.get_id()} | {s.get_dob()}")
+             f.write(str(s) + "\n")
 
     def input_Course(self):
         n = int(input("Enter the number of course: "))
@@ -76,7 +77,7 @@ class Mark_Management():
             self.course.append(c)
 
             with open("course.txt", 'a') as d:
-               d.write(f"{c.get_name()} | {c.get_id()} | {c.get_credit()}")
+             d.write(str(c) + "\n")
         
             self.mark[c.get_id()] = []
 
@@ -138,6 +139,24 @@ class Mark_Management():
         for i in index:
             stu = self.students[i]
             print(f"{stu.get_name()} | ({stu.get_id()})")
+    
+    def save_all(self):
+     data = {
+        "students": self.students,
+        "courses": self.course,
+        "marks": self.mark
+     }
+     with open("students.dat", "wb") as f:
+        pickle.dump(data, f)
+     print("Saved all data → students.dat")
+
+    def load_all(self):
+     with open("students.dat", "rb") as f:
+        data = pickle.load(f)
+     self.students = data["students"]
+     self.course = data["courses"]
+     self.mark = data["marks"]
+     print("Loaded data from students.dat")
 
 
     

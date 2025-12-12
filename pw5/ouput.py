@@ -6,4 +6,7 @@ from domains.mark import Mark
 
 from domains.mark_management import Mark_Management
 
+m = Mark_Management()
+
+
 

@@ -7,7 +7,7 @@ class Course():
     def input(self):
         self.__id = input("Course ID: ")
         self.__name = input("Course Name: ")
-        self.__credit = input("Course Credits: ")
+        self.__credit = int(input("Course Credits: "))
         
     def get_id(self):
         return self.__id
