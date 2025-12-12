@@ -1,5 +1,7 @@
 import math
 import numpy as np
+import pickle
+import os
 from domains.student import Student
 from domains.courses import Course
 from domains.mark import Mark
@@ -81,3 +83,4 @@ class Mark_Management():
         for i in index:
             stu = self.students[i]
             print(f"{stu.get_name()} | ({stu.get_id()})")
+

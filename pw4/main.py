@@ -14,7 +14,7 @@ def main():
     
     stu_id =input("Enter Student ID to get GPA: ")
     gpa = m.average_gpa(stu_id)
-    print(f"GPA of Student with {stu_id}: {(math.floor(gpa*10)/10)}")
+    print(f"GPA of {stu_id}: {(math.floor(gpa*10)/10)}")
 
     m.sort_gpa()
 
