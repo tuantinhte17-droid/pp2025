@@ -27,5 +27,4 @@ def main():
     m.sort_gpa()
     m.save_all()
 
-
 main()
